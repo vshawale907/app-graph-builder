@@ -1,8 +1,8 @@
-import { Github, Database, Server, Box, Leaf, LayoutGrid, Network } from 'lucide-react'
+import { GitBranch, Database, Server, Box, Leaf, LayoutGrid, Network } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 const NAV_ITEMS = [
-  { icon: Github, label: 'Source' },
+  { icon: GitBranch, label: 'Source' },
   { icon: Database, label: 'Database' },
   { icon: Server, label: 'Compute' },
   { icon: Box, label: 'Storage' },
