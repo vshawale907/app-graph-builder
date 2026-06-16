@@ -1,6 +1,6 @@
 import { useAppStore } from '@/store/useAppStore'
 import { Sheet, SheetContent } from '@/components/ui/sheet'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 export function RightPanel({ appsList, nodeInspector }: { appsList: ReactNode; nodeInspector: ReactNode }) {
   const { isMobilePanelOpen, toggleMobilePanel } = useAppStore()
