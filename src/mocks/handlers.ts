@@ -73,7 +73,6 @@ export const handlers = [
     await delay(600)
 
     if (appId === 'supertokens-python') {
-      // 30% chance to fail
       if (Math.random() < 0.3) {
         return new HttpResponse(null, {
           status: 500,
@@ -81,7 +80,6 @@ export const handlers = [
         })
       }
       
-      // If it doesn't fail, simulate a degraded state for one of the nodes just for flavor
       const pythonGraph = JSON.parse(JSON.stringify(GRAPH_DATA))
       pythonGraph.nodes[0].data.status = 'Degraded'
       pythonGraph.nodes[0].data.sliderValue = 40

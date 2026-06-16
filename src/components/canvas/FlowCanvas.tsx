@@ -25,8 +25,8 @@ export function FlowCanvas() {
   const { selectedAppId, setSelectedNode } = useAppStore()
   const { data, isLoading, isError, refetch, isFetching } = useAppGraph(selectedAppId)
 
-  const [nodes, setNodes, onNodesChange] = useNodesState([])
-  const [edges, setEdges, onEdgesChange] = useEdgesState([])
+  const [nodes, setNodes, onNodesChange] = useNodesState<import('@xyflow/react').Node<import('@/hooks/useAppGraph').ServiceNodeData>>([])
+  const [edges, setEdges, onEdgesChange] = useEdgesState<import('@xyflow/react').Edge>([])
 
   // Re-initialize graph when new data arrives
   useEffect(() => {

@@ -142,7 +142,7 @@ export function NodeInspector() {
                 min={0}
                 max={100}
                 step={1}
-                onValueChange={([val]) => updateNodeData({ sliderValue: val })}
+                onValueChange={(vals) => updateNodeData({ sliderValue: (vals as number[])[0] })}
                 className="py-2"
               />
             </div>
