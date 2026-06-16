@@ -1,73 +1,45 @@
-# React + TypeScript + Vite
+# App Graph Builder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive cloud infrastructure dashboard UI built as a take-home frontend assignment. It visualizes service dependencies using an interactive canvas and provides a synced inspector to manage configuration and runtime metrics.
 
-Currently, two official plugins are available:
+## 🚀 Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Framework**: React 19 + Vite + TypeScript (Strict Mode)
+- **State Management**: Zustand v5
+- **Data Fetching**: TanStack Query v5
+- **Canvas/Graph**: ReactFlow (`@xyflow/react`)
+- **Styling**: Tailwind CSS v4 + shadcn/ui components
+- **Mocking**: MSW (Mock Service Worker)
+- **Code Quality**: ESLint (Flat Config) + Prettier
 
-## React Compiler
+## 🛠️ Setup Instructions
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/vshawale907/app-graph-builder.git
+   cd app-graph-builder
+   ```
 
-## Expanding the ESLint configuration
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+   The app will open at `http://localhost:5173`. MSW will automatically intercept API requests and serve mocked data.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📐 Architecture & Key Decisions
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **Zustand over Context API**: Used Zustand for global UI state (selected app, selected node, mobile panel state) to avoid prop-drilling and re-render cascades. Selectors ensure that components only re-render when the specific slice of state they care about changes.
+- **TanStack Query + MSW**: Real-world apps need robust data fetching. TanStack Query handles caching, stale states, and automatic background refetches. MSW intercepts at the network layer, providing a hyper-realistic environment (including simulated 600ms latency and a 30% failure rate on specific endpoints to test error boundaries) without needing a real backend.
+- **Custom ReactFlow Nodes**: Instead of keeping node data in a separate store and trying to sync it with ReactFlow, we lean into ReactFlow's architecture by storing all UI-specific data inside the `data` prop of each node. The `NodeInspector` uses `useReactFlow().setNodes` to mutate this state, ensuring the canvas and the inspector are always in perfect sync.
+- **Unstyled Primitives (shadcn/ui)**: Using Radix UI primitives via shadcn allows for rapid development of accessible components (Tabs, Sliders, Sheets) while retaining complete control over the dark theme aesthetics via Tailwind.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## ⚠️ Known Limitations
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **Local State Only**: Changes made in the Node Inspector (like dragging the resource slider or renaming a service) only persist in the local ReactFlow state. Switching apps or refreshing the page will reset the data to the MSW mock defaults.
+- **Mocked Edges**: The "Add Node" functionality drops a new node onto the canvas, but it does not automatically draw edges to existing nodes.
+- **Responsive Canvas**: While the app shell and inspector are fully responsive (using a slide-over drawer on mobile), manipulating the complex graph canvas on very small touch screens can be tricky.
