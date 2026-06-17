@@ -157,7 +157,7 @@ export function FlowCanvas() {
         onDrop={onDrop}
         nodeTypes={nodeTypes}
         fitView
-        className="bg-[#0d0d0d]"
+        className="bg-gray-50 dark:bg-[#0d0d0d]"
         deleteKeyCode={['Backspace', 'Delete']}
         minZoom={0.2}
         maxZoom={2}
@@ -169,12 +169,12 @@ export function FlowCanvas() {
           color="#333"
         />
         <Controls
-          className="bg-[#1a1a1a] border-white/10 fill-white text-white"
+          className="bg-white dark:bg-[#1a1a1a] border-gray-200 dark:border-white/10 fill-gray-600 dark:fill-white text-gray-600 dark:text-white"
         />
         <MiniMap
           nodeColor="#10b981"
-          maskColor="rgba(0, 0, 0, 0.6)"
-          className="bg-[#111] border border-white/10 rounded-lg overflow-hidden"
+          maskColor="rgba(0, 0, 0, 0.2)"
+          className="bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-lg overflow-hidden dark:maskColor-[rgba(0,0,0,0.6)]"
         />
       </ReactFlow>
     </div>

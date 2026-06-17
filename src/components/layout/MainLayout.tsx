@@ -11,7 +11,7 @@ interface MainLayoutProps {
 
 export function MainLayout({ canvas, appsList, nodeInspector }: MainLayoutProps) {
   return (
-    <div className="flex flex-col h-screen w-full bg-[#0d0d0d] overflow-hidden">
+    <div className="flex flex-col h-screen w-full bg-gray-50 dark:bg-[#0d0d0d] overflow-hidden">
       <TopBar />
       <div className="flex flex-1 overflow-hidden relative">
         <LeftRail />

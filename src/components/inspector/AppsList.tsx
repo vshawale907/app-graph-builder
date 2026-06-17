@@ -11,9 +11,9 @@ export function AppsList() {
   if (isLoading) {
     return (
       <div className="space-y-2">
-        <Skeleton className="h-12 w-full bg-white/5" />
-        <Skeleton className="h-12 w-full bg-white/5" />
-        <Skeleton className="h-12 w-full bg-white/5" />
+        <Skeleton className="h-12 w-full bg-gray-200 dark:bg-white/5" />
+        <Skeleton className="h-12 w-full bg-gray-200 dark:bg-white/5" />
+        <Skeleton className="h-12 w-full bg-gray-200 dark:bg-white/5" />
       </div>
     )
   }
@@ -37,15 +37,15 @@ export function AppsList() {
             className={cn(
               "w-full flex items-center gap-3 p-3 text-left rounded-lg transition-colors border",
               isSelected
-                ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
-                : "bg-transparent border-transparent text-gray-300 hover:bg-white/5"
+                ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400"
+                : "bg-transparent border-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5"
             )}
           >
-            <div className="w-8 h-8 rounded bg-black/40 border border-white/10 flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/10 flex items-center justify-center shrink-0">
               <Server className="w-4 h-4" style={{ color: app.color }} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-sm truncate text-white">{app.name}</p>
+              <p className="font-medium text-sm truncate text-gray-900 dark:text-white">{app.name}</p>
               <p className="text-xs opacity-60 truncate font-mono mt-0.5">{app.id}</p>
             </div>
           </button>
