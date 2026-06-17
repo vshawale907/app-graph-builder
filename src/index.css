@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 @theme {
   --color-bg-primary: #0d0d0d;
   --color-bg-card: #161616;
@@ -24,8 +26,7 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #0d0d0d;
-    color: #f0f0f0;
+    @apply bg-gray-50 text-gray-900 dark:bg-[#0d0d0d] dark:text-[#f0f0f0];
     font-family: 'Inter', system-ui, sans-serif;
   }
 

@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, type DragEvent } from 'react'
 import {
   ReactFlow,
   Background,
@@ -7,6 +7,7 @@ import {
   useNodesState,
   useEdgesState,
   BackgroundVariant,
+  useReactFlow,
   type NodeMouseHandler,
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
@@ -24,6 +25,7 @@ const nodeTypes = {
 export function FlowCanvas() {
   const { selectedAppId, setSelectedNode } = useAppStore()
   const { data, isLoading, isError, refetch, isFetching } = useAppGraph(selectedAppId)
+  const { screenToFlowPosition } = useReactFlow()
 
   const [nodes, setNodes, onNodesChange] = useNodesState<import('@xyflow/react').Node<import('@/hooks/useAppGraph').ServiceNodeData>>([])
   const [edges, setEdges, onEdgesChange] = useEdgesState<import('@xyflow/react').Edge>([])
@@ -37,6 +39,54 @@ export function FlowCanvas() {
       setSelectedNode(null)
     }
   }, [data, setNodes, setEdges, setSelectedNode])
+
+  const onDragOver = useCallback((event: DragEvent) => {
+    event.preventDefault()
+    event.dataTransfer.dropEffect = 'move'
+  }, [])
+
+  const onDrop = useCallback(
+    (event: DragEvent) => {
+      event.preventDefault()
+
+      const dataStr = event.dataTransfer.getData('application/reactflow')
+      
+      if (!dataStr) {
+        return
+      }
+
+      try {
+        const parsedData = JSON.parse(dataStr)
+        if (!parsedData.type) return
+
+        const position = screenToFlowPosition({
+          x: event.clientX,
+          y: event.clientY,
+        })
+
+        const newNode = {
+          id: `node-custom-${Date.now()}`,
+          type: parsedData.type,
+          position,
+          data: {
+            label: parsedData.label,
+            status: 'Healthy',
+            cpu: 0,
+            memory: 0,
+            disk: 0,
+            region: 1,
+            sliderValue: 50,
+            cost: 0.01,
+          },
+        }
+
+        setNodes((nds) => nds.concat(newNode as any))
+      } catch (e) {
+        console.error(e)
+      }
+    },
+    [screenToFlowPosition, setNodes]
+  )
 
   const onNodeClick: NodeMouseHandler = useCallback(
     (_, node) => {
@@ -103,6 +153,8 @@ export function FlowCanvas() {
         onEdgesChange={onEdgesChange}
         onNodeClick={onNodeClick}
         onPaneClick={onPaneClick}
+        onDragOver={onDragOver}
+        onDrop={onDrop}
         nodeTypes={nodeTypes}
         fitView
         className="bg-[#0d0d0d]"
